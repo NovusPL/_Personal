@@ -210,13 +210,8 @@ root.geometry("300x150")
 #root.iconbitmap('favicon.ico')
 root.withdraw()
 
-MsgBox = tk.messagebox.askquestion('Question', 'Do you want to look for available doctor''s appointment?')
-if MsgBox =='yes':
+if __name__ = "__main__":
     ShowButtons()
-else:
-    close()
-
-
 
 root.mainloop()
 
