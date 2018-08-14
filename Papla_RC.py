@@ -18,7 +18,10 @@ class Doctor():
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         binary = FirefoxBinary('/home/username/firefox/firefox')
         import time
-        driver = webdriver.Firefox()
+        try:
+            driver = webdriver.Chrome()
+        except:
+            driver = webdriver.Firefox()
         time.sleep(3)
         driver.get("https://online.enel.pl/Visit/New")
         elem = driver.find_element_by_name("Login")
@@ -82,7 +85,10 @@ class Generic():
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         binary = FirefoxBinary('/home/username/firefox/firefox')
         import time
-        driver = webdriver.Firefox()
+        try:
+            driver = webdriver.Chrome()
+        except:
+            driver = webdriver.Firefox()
         time.sleep(3)
         driver.get("https://online.enel.pl/Visit/New")
         elem = driver.find_element_by_name("Login")
@@ -198,7 +204,7 @@ def ShowButtons():
     label.pack()
 
 
-# In[ ]:
+# In[3]:
 
 
 import tkinter as tk
@@ -210,13 +216,15 @@ root.geometry("300x150")
 #root.iconbitmap('favicon.ico')
 root.withdraw()
 
-MsgBox = tk.messagebox.askquestion('Question', 'Do you want to look for available doctor''s appointment?')
-if MsgBox =='yes':
+if __name__ == "__main__":
     ShowButtons()
-else:
-    close()
-
 
 
 root.mainloop()
+
+
+# In[ ]:
+
+
+""
 
