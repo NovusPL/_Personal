@@ -10,18 +10,26 @@ class Doctor():
         if name == "Papla":
             self.name = "#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > label:nth-child(25) > input:nth-child(1)"
             self.spec = "ginekologia"
+    
+    def __del__(self):
+        driver.close()
+    
     def Check(self, user):
+        global headless
         from selenium import webdriver
         from selenium.webdriver.common.keys import Keys
         from selenium.webdriver.support.ui import Select
+        from selenium.webdriver.firefox.options import Options
         from selenium import webdriver
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        binary = FirefoxBinary('/home/username/firefox/firefox')
+        binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
+        options = Options()
+        options.add_argument("-headless")
         import time
         try:
             driver = webdriver.Chrome()
         except:
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)
         time.sleep(3)
         driver.get("https://online.enel.pl/Visit/New")
         elem = driver.find_element_by_name("Login")
@@ -67,8 +75,27 @@ class Doctor():
         elem = driver.find_element_by_css_selector("input.form-control")
         elem.clear()
         elem.send_keys("2018-08-08 - 2018-10-22")
-
         elem = driver.find_element_by_id("sbtn").click()
+        time.sleep(8)
+        driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+        lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
+        if headless ==1:
+            driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+            lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
+            
+            if len(lol)==0:
+              MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
+              if MsgBox =='yes':
+                  from PIL import Image
+                  f = Image.open('C:\\_Research\\_Models\\result.png').show()
+                  MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
+                  if MsgBox =='yes':
+                      headless = 9
+                  else:
+                      driver.close()
+              else:
+                  driver.close()
+  
 
 
 # In[ ]:
@@ -77,18 +104,29 @@ class Doctor():
 class Generic():
     def __init__(self,spec):
         self.spec = spec
+        
+        
+    def __del__(self):
+        driver.close()
+        
+        
     def Check(self, user):
+        global headless
         from selenium import webdriver
         from selenium.webdriver.common.keys import Keys
         from selenium.webdriver.support.ui import Select
+        from selenium.webdriver.firefox.options import Options
         from selenium import webdriver
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        binary = FirefoxBinary('/home/username/firefox/firefox')
+        binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
+        options = Options()
+        if headless ==1:
+            options.add_argument("-headless")
         import time
         try:
             driver = webdriver.Chrome()
         except:
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)
         time.sleep(3)
         driver.get("https://online.enel.pl/Visit/New")
         elem = driver.find_element_by_name("Login")
@@ -131,9 +169,28 @@ class Generic():
         time.sleep(1)
 
         elem = driver.find_element_by_id("sbtn").click()
+        time.sleep(8)
+        if headless ==1:
+            driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+            lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
+            
+            if len(lol)==0:
+              MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
+              if MsgBox =='yes':
+                  from PIL import Image
+                  f = Image.open('C:\\_Research\\_Models\\result.png').show()
+                  MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
+                  if MsgBox =='yes':
+                      headless = 9
+                  else:
+                      driver.close()
+              else:
+                  driver.close()
+        
+        
 
 
-# In[4]:
+# In[1]:
 
 
 def credentials(user):
@@ -143,6 +200,10 @@ def credentials(user):
     password = lines[1].split()[0]
     f.close()
     return login, password
+
+
+def Reserve():
+    pass
 
 def Pap():
     papla = Doctor("Papla")
@@ -159,16 +220,25 @@ def derma():
 def endo():
     endo = Generic("endokrynologia")
     endo.Check(user)
-    
+def interna():
+    interna = Generic("interna")
+    interna.Check(user)
+    if headless ==9:
+        interna.Check(user)
     
 def close():
     root.destroy()
     
 def ShowButtons():
+    global headless
+    headless =1
+    
     root.deiconify()
     root.title('Doctor Selector')
     frame = tk.Frame(root)
     frame.pack()
+    intern = tk.Button(frame,text = 'Interna', command=interna)
+    intern.pack(side = tk.RIGHT)
     button = tk.Button(frame, 
                    text="QUIT", 
                    fg="red",
@@ -187,9 +257,14 @@ def ShowButtons():
     endok = tk.Button(frame,text = 'Endokrynolog', command=endo)
     endok.pack(side = tk.BOTTOM)
     
+    
+    
     def sel():
         global user
         user = str(var.get())
+    def click():
+        global headless
+        headless = v.get()
 
     var = StringVar(value="1")
     R1 = Radiobutton(root, text="Maciuch", variable=var, value="Maciek",
@@ -199,12 +274,33 @@ def ShowButtons():
     R2 = Radiobutton(root, text="Donat", variable=var, value="Kasia",
                       command=sel)
     R2.pack( anchor = W )
+    
+    v = IntVar(value = 1)
+
+    c = Checkbutton(root, text="HEADLESS - FOR TESTING", variable=v, onvalue = 1, offvalue = 0, command = click)
+    c.pack()
+   
 
     label = Label(root)
     label.pack()
 
 
 # In[3]:
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-f", "--file", dest="filename",
+                    help="write report to FILE", metavar="FILE")
+parser.add_argument("-q", "--quiet",
+                    action="store_true", dest="quiet", default=True,
+                    help="don't print status messages to stdout")
+
+args = parser.parse_args()
+
+if args.quiet:
+    silencio = 1
+else:
+    silencio = 0
 
 
 import tkinter as tk
@@ -217,14 +313,14 @@ root.geometry("300x150")
 root.withdraw()
 
 if __name__ == "__main__":
-    ShowButtons()
+    if silencio ==1:
+        ShowButtons()
+    else:
+        user = "Maciek"
+        headless =1
+        Pap()
+    
 
 
 root.mainloop()
-
-
-# In[ ]:
-
-
-""
 
