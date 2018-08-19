@@ -11,8 +11,7 @@ class Doctor():
             self.name = "#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > label:nth-child(25) > input:nth-child(1)"
             self.spec = "ginekologia"
     
-    def __del__(self):
-        driver.close()
+
     
     def Check(self, user):
         global headless
@@ -24,7 +23,8 @@ class Doctor():
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
         options = Options()
-        options.add_argument("-headless")
+        if headless ==1:
+            options.add_argument("-headless")
         import time
         try:
             driver = webdriver.Chrome()
@@ -106,10 +106,7 @@ class Generic():
         self.spec = spec
         
         
-    def __del__(self):
-        driver.close()
-        
-        
+
     def Check(self, user):
         global headless
         from selenium import webdriver
@@ -286,13 +283,18 @@ def ShowButtons():
 
 
 # In[3]:
+    
+import tkinter as tk
+import sys
+from tkinter import messagebox
+from tkinter import *
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",
                     help="write report to FILE", metavar="FILE")
 parser.add_argument("-q", "--quiet",
-                    action="store_true", dest="quiet", default=True,
+                    action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
 
 args = parser.parse_args()
@@ -303,17 +305,15 @@ else:
     silencio = 0
 
 
-import tkinter as tk
-import sys
-from tkinter import messagebox
-from tkinter import *
+
 root = tk.Tk()
 root.geometry("300x150")
 #root.iconbitmap('favicon.ico')
 root.withdraw()
 
 if __name__ == "__main__":
-    if silencio ==1:
+    print(silencio)
+    if silencio ==0:
         ShowButtons()
     else:
         user = "Maciek"
