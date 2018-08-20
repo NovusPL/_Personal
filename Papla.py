@@ -8,7 +8,7 @@ class Doctor():
     def __init__(self, name):
         self.name = name
         if name == "Papla":
-            self.name = "#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > label:nth-child(25) > input:nth-child(1)"
+            self.name = '//span[contains(text(), "Papl")]'
             self.spec = "ginekologia"
     
 
@@ -71,7 +71,7 @@ class Doctor():
         elem = driver.find_element_by_id("checkboxdropdownDoc").click()
         elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
         #elem = driver.find_element_by_partial_link_text('Zazna').click()
-        driver.find_element_by_css_selector(self.name).click()
+        driver.find_element_by_xpath(self.name).click()
 
         elem = driver.find_element_by_css_selector("input.form-control")
         elem.clear()

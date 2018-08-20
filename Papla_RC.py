@@ -8,11 +8,10 @@ class Doctor():
     def __init__(self, name):
         self.name = name
         if name == "Papla":
-            self.name = "#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > div:nth-child(2) > label:nth-child(25) > input:nth-child(1)"
+            self.name = '//span[contains(text(), "Papl")]'
             self.spec = "ginekologia"
     
-    def __del__(self):
-        driver.close()
+
     
     def Check(self, user):
         global headless
@@ -24,8 +23,10 @@ class Doctor():
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
         options = Options()
-        options.add_argument("-headless")
+        if headless ==1:
+            options.add_argument("-headless")
         import time
+        from datetime import datetime
         try:
             driver = webdriver.Chrome()
         except:
@@ -70,24 +71,24 @@ class Doctor():
         elem = driver.find_element_by_id("checkboxdropdownDoc").click()
         elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
         #elem = driver.find_element_by_partial_link_text('Zazna').click()
-        driver.find_element_by_css_selector(self.name).click()
+        driver.find_element_by_xpath(self.name).click()
 
         elem = driver.find_element_by_css_selector("input.form-control")
         elem.clear()
         elem.send_keys("2018-08-08 - 2018-10-22")
         elem = driver.find_element_by_id("sbtn").click()
         time.sleep(8)
-        driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+        driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
         lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
         if headless ==1:
-            driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+            driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
             if len(lol)==0:
               MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
               if MsgBox =='yes':
                   from PIL import Image
-                  f = Image.open('C:\\_Research\\_Models\\result.png').show()
+                  f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
                       headless = 9
@@ -95,7 +96,8 @@ class Doctor():
                       driver.close()
               else:
                   driver.close()
-  
+            else:
+                driver.quit()
 
 
 # In[ ]:
@@ -106,10 +108,7 @@ class Generic():
         self.spec = spec
         
         
-    def __del__(self):
-        driver.close()
-        
-        
+
     def Check(self, user):
         global headless
         from selenium import webdriver
@@ -123,6 +122,7 @@ class Generic():
         if headless ==1:
             options.add_argument("-headless")
         import time
+        from datetime import datetime
         try:
             driver = webdriver.Chrome()
         except:
@@ -171,14 +171,14 @@ class Generic():
         elem = driver.find_element_by_id("sbtn").click()
         time.sleep(8)
         if headless ==1:
-            driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+            driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
             if len(lol)==0:
               MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
               if MsgBox =='yes':
                   from PIL import Image
-                  f = Image.open('C:\\_Research\\_Models\\result.png').show()
+                  f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
                       headless = 9
@@ -186,6 +186,8 @@ class Generic():
                       driver.close()
               else:
                   driver.close()
+            else:
+                driver.quit()
         
         
 
@@ -286,13 +288,21 @@ def ShowButtons():
 
 
 # In[3]:
+    
+import tkinter as tk
+import sys
+from tkinter import messagebox
+from tkinter import *
 from argparse import ArgumentParser
+from datetime import datetime
+global filename
+filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",
                     help="write report to FILE", metavar="FILE")
 parser.add_argument("-q", "--quiet",
-                    action="store_true", dest="quiet", default=True,
+                    action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
 
 args = parser.parse_args()
@@ -303,17 +313,15 @@ else:
     silencio = 0
 
 
-import tkinter as tk
-import sys
-from tkinter import messagebox
-from tkinter import *
+
 root = tk.Tk()
 root.geometry("300x150")
 #root.iconbitmap('favicon.ico')
 root.withdraw()
 
 if __name__ == "__main__":
-    if silencio ==1:
+    print(silencio)
+    if silencio ==0:
         ShowButtons()
     else:
         user = "Maciek"
