@@ -26,6 +26,7 @@ class Doctor():
         if headless ==1:
             options.add_argument("-headless")
         import time
+        from datetime import datetime
         try:
             driver = webdriver.Chrome()
         except:
@@ -77,17 +78,18 @@ class Doctor():
         elem.send_keys("2018-08-08 - 2018-10-22")
         elem = driver.find_element_by_id("sbtn").click()
         time.sleep(8)
-        driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+        driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
         lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
         if headless ==1:
-            driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+            filename = datetime.now().strftime("%Y%m%d-%H%M%S")
+            driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
             if len(lol)==0:
               MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
               if MsgBox =='yes':
                   from PIL import Image
-                  f = Image.open('C:\\_Research\\_Models\\result.png').show()
+                  f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
                       headless = 9
@@ -120,6 +122,7 @@ class Generic():
         if headless ==1:
             options.add_argument("-headless")
         import time
+        from datetime import datetime
         try:
             driver = webdriver.Chrome()
         except:
@@ -168,14 +171,15 @@ class Generic():
         elem = driver.find_element_by_id("sbtn").click()
         time.sleep(8)
         if headless ==1:
-            driver.save_screenshot('C:\\_Research\\_Models\\result.png')
+            filename = datetime.now().strftime("%Y%m%d-%H%M%S")
+            driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
             if len(lol)==0:
               MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
               if MsgBox =='yes':
                   from PIL import Image
-                  f = Image.open('C:\\_Research\\_Models\\result.png').show()
+                  f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
                       headless = 9
