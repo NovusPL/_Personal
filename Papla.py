@@ -81,7 +81,6 @@ class Doctor():
         driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
         lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
         if headless ==1:
-            filename = datetime.now().strftime("%Y%m%d-%H%M%S")
             driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
@@ -97,7 +96,8 @@ class Doctor():
                       driver.close()
               else:
                   driver.close()
-  
+            else:
+                driver.quit()
 
 
 # In[ ]:
@@ -171,7 +171,6 @@ class Generic():
         elem = driver.find_element_by_id("sbtn").click()
         time.sleep(8)
         if headless ==1:
-            filename = datetime.now().strftime("%Y%m%d-%H%M%S")
             driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
@@ -187,6 +186,8 @@ class Generic():
                       driver.close()
               else:
                   driver.close()
+            else:
+                driver.quit()
         
         
 
@@ -293,6 +294,9 @@ import sys
 from tkinter import messagebox
 from tkinter import *
 from argparse import ArgumentParser
+from datetime import datetime
+global filename
+filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",
