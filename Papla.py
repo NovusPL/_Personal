@@ -1,16 +1,19 @@
 
-# coding: utf-8
-
 # In[ ]:
-
-
-class Doctor():
-    def __init__(self, name):
-        self.name = name
-        if name == "Papla":
-            self.name = '//span[contains(text(), "Papl")]'
-            self.spec = "ginekologia"
+class Visit():
     
+    def __init__(self,spec, name="NONE"):
+        self.spec = spec
+        self.name = name
+        
+    def Doctor_Name(self,name="NONE"):
+        switcher = {
+        'Papla': '//span[contains(text(), "Papl")]',
+        1: "one",
+        2: "two",
+        }
+        return switcher.get(name, "NONE")
+
 
     
     def Check(self, user):
@@ -19,19 +22,22 @@ class Doctor():
         from selenium.webdriver.common.keys import Keys
         from selenium.webdriver.support.ui import Select
         from selenium.webdriver.firefox.options import Options
+        from selenium.webdriver.chrome.options import Options as c_Options
         from selenium import webdriver
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
         options = Options()
+        c_options = c_Options()
         if headless ==1:
             options.add_argument("-headless")
+            c_options.add_argument("--headless")
         import time
         from datetime import datetime
         try:
-            driver = webdriver.Chrome()
+            driver = webdriver.Chrome(chrome_options=c_options)
         except:
-            driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)
-        time.sleep(3)
+            driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)    
+            
         driver.get("https://online.enel.pl/Visit/New")
         elem = driver.find_element_by_name("Login")
         elem.clear()
@@ -47,7 +53,6 @@ class Doctor():
         select = Select(driver.find_element_by_id("City"))
         select.select_by_visible_text("Warszawa")
         time.sleep(2)
-        
         
         elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
@@ -65,100 +70,11 @@ class Doctor():
         select = Select(driver.find_element_by_id("ListOfSpecialities"))
         select.select_by_visible_text(self.spec)
         time.sleep(1)
-        
-        
-        
-        elem = driver.find_element_by_id("checkboxdropdownDoc").click()
-        elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
-        #elem = driver.find_element_by_partial_link_text('Zazna').click()
-        driver.find_element_by_xpath(self.name).click()
+        if self.name !="NONE":
+            elem = driver.find_element_by_id("checkboxdropdownDoc").click()
+            elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
+            driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
 
-        elem = driver.find_element_by_css_selector("input.form-control")
-        elem.clear()
-        elem.send_keys("2018-08-08 - 2018-10-22")
-        elem = driver.find_element_by_id("sbtn").click()
-        time.sleep(8)
-        driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
-        lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
-        if headless ==1:
-            driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
-            lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
-            
-            if len(lol)==0:
-              MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
-              if MsgBox =='yes':
-                  from PIL import Image
-                  f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
-                  MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
-                  if MsgBox =='yes':
-                      headless = 9
-                  else:
-                      driver.close()
-              else:
-                  driver.close()
-            else:
-                driver.quit()
-
-
-# In[ ]:
-
-
-class Generic():
-    def __init__(self,spec):
-        self.spec = spec
-        
-        
-
-    def Check(self, user):
-        global headless
-        from selenium import webdriver
-        from selenium.webdriver.common.keys import Keys
-        from selenium.webdriver.support.ui import Select
-        from selenium.webdriver.firefox.options import Options
-        from selenium import webdriver
-        from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
-        options = Options()
-        if headless ==1:
-            options.add_argument("-headless")
-        import time
-        from datetime import datetime
-        try:
-            driver = webdriver.Chrome()
-        except:
-            driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)
-        time.sleep(3)
-        driver.get("https://online.enel.pl/Visit/New")
-        elem = driver.find_element_by_name("Login")
-        elem.clear()
-        elem.send_keys(credentials(user)[0])
-        elem = driver.find_element_by_name("Password")
-        elem.clear()
-        elem.send_keys(credentials(user)[1])
-        elem = driver.find_element_by_name("IsAcceptedRule").click()
-        elem = driver.find_element_by_partial_link_text('Zalo').click()
-        time.sleep(2)
-        elem = driver.get("https://online.enel.pl/Visit/New")
-        elem = driver.find_element_by_id("City")
-        select = Select(driver.find_element_by_id("City"))
-        select.select_by_visible_text("Warszawa")
-        time.sleep(2)
-        
-        elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
-        time.sleep(2)
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(1) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(2) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(3) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(4) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(5) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(7) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(9) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#confirmDepartment").click()
-        time.sleep(2)
-        
-        select = Select(driver.find_element_by_id("ListOfSpecialities"))
-        select.select_by_visible_text(self.spec)
         elem = driver.find_element_by_css_selector("input.form-control")
         elem.clear()
         elem.send_keys("2018-08-08 - 2018-10-22")
@@ -166,17 +82,17 @@ class Generic():
             elem = driver.find_element_by_css_selector("#AcptRul").click()
         except:
             pass
-        time.sleep(1)
-
         elem = driver.find_element_by_id("sbtn").click()
         time.sleep(8)
+        lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
         if headless ==1:
             driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
             if len(lol)==0:
-              MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
-              if MsgBox =='yes':
+                Beep()           
+                MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
+                if MsgBox =='yes':
                   from PIL import Image
                   f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
@@ -184,15 +100,10 @@ class Generic():
                       headless = 9
                   else:
                       driver.close()
-              else:
+                else:
                   driver.close()
             else:
                 driver.quit()
-        
-        
-
-
-# In[1]:
 
 
 def credentials(user):
@@ -203,27 +114,41 @@ def credentials(user):
     f.close()
     return login, password
 
-
+def Beep():
+    import winsound
+    duration = 700  # millisecond
+    freq = 300  # Hz
+    winsound.Beep(freq, duration)
+    winsound.Beep(freq, duration)
+    
 def Reserve():
     pass
 
 def Pap():
-    papla = Doctor("Papla")
+    papla = Visit("ginekologia","Papla")
     papla.Check(user)
+    if headless ==9:
+        papla.Check(user)
     
 def higiena():
-    higienistka = Generic("higiena jamy ustnej")
+    higienistka = Visit("higiena jamy ustnej")
     higienistka.Check(user)
+    if headless ==9:
+        higienistka.Check(user)
     
 def derma():
-    derma = Generic("dermatologia i wenerologia")
+    derma = Visit("dermatologia i wenerologia")
     derma.Check(user)
+    if headless ==9:
+        derma.Check(user)
     
 def endo():
-    endo = Generic("endokrynologia")
+    endo = Visit("endokrynologia")
     endo.Check(user)
+    if headless ==9:
+        endo.Check(user)
 def interna():
-    interna = Generic("interna")
+    interna = Visit("interna")
     interna.Check(user)
     if headless ==9:
         interna.Check(user)
@@ -331,4 +256,3 @@ if __name__ == "__main__":
 
 
 root.mainloop()
-
