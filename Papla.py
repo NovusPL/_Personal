@@ -25,7 +25,7 @@ class Visit():
         from selenium.webdriver.chrome.options import Options as c_Options
         from selenium import webdriver
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        binary = FirefoxBinary("C:\\Users\maciej-nowak\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
+        binary = FirefoxBinary("C:\\Users\\"+os.getlogin()+"\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
         options = Options()
         c_options = c_Options()
         if headless ==1:
@@ -87,7 +87,7 @@ class Visit():
         time.sleep(8)
         lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
         if headless ==1:
-            driver.save_screenshot('C:\\_Research\\_Models\\'+filename+'.png')
+            driver.save_screenshot(dir_path+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
             
             if len(lol)==0:
@@ -95,7 +95,7 @@ class Visit():
                 MsgBox = tk.messagebox.askquestion('Question', 'Would you like to see the visits?')
                 if MsgBox =='yes':
                   from PIL import Image
-                  f = Image.open('C:\\_Research\\_Models\\'+filename+'.png').show()
+                  f = Image.open(dir_path+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
                       headless = 9
@@ -108,7 +108,7 @@ class Visit():
 
 
 def credentials(user):
-    f = open("C:\_Research\_Models\\"+user+".txt")
+    f = open(dir_path+user+".txt")
     lines = f.readlines()
     login = lines[0].split()[0]
     password = lines[1].split()[0]
@@ -222,6 +222,10 @@ from tkinter import *
 from argparse import ArgumentParser
 from datetime import datetime
 global filename
+import os 
+global dir_path
+dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
+print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
 parser = ArgumentParser()
