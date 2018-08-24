@@ -64,6 +64,7 @@ class Visit():
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(5) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(7) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(9) > input:nth-child(1)").click()
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]')   .click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
         time.sleep(2)
                 
