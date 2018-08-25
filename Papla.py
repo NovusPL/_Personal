@@ -23,6 +23,9 @@ class Visit():
         from selenium.webdriver.support.ui import Select
         from selenium.webdriver.firefox.options import Options
         from selenium.webdriver.chrome.options import Options as c_Options
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
         from selenium import webdriver
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         binary = FirefoxBinary("C:\\Users\\"+os.getlogin()+"\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
@@ -45,18 +48,22 @@ class Visit():
         elem = driver.find_element_by_name("Password")
         elem.clear()
         elem.send_keys(credentials(user)[1])
-        elem = driver.find_element_by_name("IsAcceptedRule").click()
+        elem = driver.find_element_by_name("IsAcceptedRule").click() 
         elem = driver.find_element_by_partial_link_text('Zalo').click()
-        time.sleep(2)
+       
+        wait = WebDriverWait(driver, 10)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="visits-slot"]/div/div/div[1]/a/img')))
+
         elem = driver.get("https://online.enel.pl/Visit/New")
         elem = driver.find_element_by_id("City")
         select = Select(driver.find_element_by_id("City"))
         select.select_by_visible_text("Warszawa")
-        time.sleep(2)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
+
         
         elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
-        time.sleep(2)
+        time.sleep(1)
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(1) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(2) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(3) > input:nth-child(1)").click()
@@ -66,11 +73,12 @@ class Visit():
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(9) > input:nth-child(1)").click()
         elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]')   .click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
-        time.sleep(2)
+        time.sleep(1)
                 
         select = Select(driver.find_element_by_id("ListOfSpecialities"))
         select.select_by_visible_text(self.spec)
-        time.sleep(1)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
+
         if self.name !="NONE":
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
@@ -84,7 +92,9 @@ class Visit():
         except:
             pass
         elem = driver.find_element_by_id("sbtn").click()
-        time.sleep(8)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[contains(text(), "terminie możesz")]')))
+
+        #time.sleep(8)
         lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
         if headless ==1:
             driver.save_screenshot(dir_path+filename+'.png')
@@ -224,7 +234,7 @@ from datetime import datetime
 global filename
 import os 
 global dir_path
-dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
+dir_path = os.path.dirname(os.path.realpath('__file__'))+"\\"
 print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
