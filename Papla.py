@@ -28,7 +28,8 @@ class Visit():
         from selenium.webdriver.support.ui import WebDriverWait
         from selenium import webdriver
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
-        binary = FirefoxBinary("C:\\Users\\"+os.getlogin()+"\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
+        login = os.path.expanduser('~')
+        binary = FirefoxBinary(login+"\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
         options = Options()
         c_options = c_Options()
         if headless ==1:
