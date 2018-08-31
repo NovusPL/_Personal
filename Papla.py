@@ -95,8 +95,7 @@ class Visit():
         elem = driver.find_element_by_id("sbtn").click()
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[contains(text(), "terminie możesz")]')))
 
-        #time.sleep(8)
-        lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
+        time.sleep(1)
         if headless ==1:
             driver.save_screenshot(dir_path+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
@@ -235,7 +234,7 @@ from datetime import datetime
 global filename
 import os 
 global dir_path
-dir_path = os.path.dirname(os.path.realpath('__file__'))+"\\"
+dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
 print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
