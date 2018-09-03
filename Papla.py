@@ -9,7 +9,7 @@ class Visit():
     def Doctor_Name(self,name="NONE"):
         switcher = {
         'Papla': '//span[contains(text(), "Papl")]',
-        1: "one",
+        'Jańczyk': '//span[contains(text(), "Jańczy")]',
         2: "two",
         }
         return switcher.get(name, "NONE")
@@ -154,7 +154,7 @@ def derma():
         derma.Check(user)
     
 def endo():
-    endo = Visit("endokrynologia")
+    endo = Visit("endokrynologia", "Jańczyk")
     endo.Check(user)
     if headless ==9:
         endo.Check(user)
@@ -244,8 +244,9 @@ parser.add_argument("-f", "--file", dest="filename",
 parser.add_argument("-q", "--quiet",
                     action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
-
+parser.add_argument('-l', '--doc', nargs ='?')
 args = parser.parse_args()
+print(args.doc)
 
 if args.quiet:
     silencio = 1
@@ -266,7 +267,10 @@ if __name__ == "__main__":
     else:
         user = "Maciek"
         headless =1
-        Pap()
+        if args.doc =="endo":
+            endo()
+        else:
+            Pap()
     
 
 
