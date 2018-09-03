@@ -2,17 +2,14 @@
 # In[ ]:
 class Visit():
     
-    def __init__(self,spec, name="NONE"):
+    def __init__(self,spec, name=None):
         self.spec = spec
         self.name = name
         
-    def Doctor_Name(self,name="NONE"):
-        switcher = {
-        'Papla': '//span[contains(text(), "Papl")]',
-        'Jańczyk': '//span[contains(text(), "Jańczy")]',
-        2: "two",
-        }
-        return switcher.get(name, "NONE")
+    def Doctor_Name(self,name=None):
+        switcher = self.name
+        switcher = '//span[contains(text(), "'+self.name+'")]'       
+        return switcher
 
 
     
@@ -79,8 +76,8 @@ class Visit():
         select = Select(driver.find_element_by_id("ListOfSpecialities"))
         select.select_by_visible_text(self.spec)
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
-
-        if self.name !="NONE":
+        print(self.name)
+        if self.name !=None:
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
@@ -108,13 +105,18 @@ class Visit():
                   f = Image.open(dir_path+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
-                      headless = 9
+                      headless = 0
+                      self.Check(user)
                   else:
                       driver.close()
                 else:
                   driver.close()
             else:
                 driver.quit()
+        
+                
+                
+                
 
 
 def credentials(user):
@@ -138,31 +140,26 @@ def Reserve():
 def Pap():
     papla = Visit("ginekologia","Papla")
     papla.Check(user)
-    if headless ==9:
-        papla.Check(user)
+
     
 def higiena():
     higienistka = Visit("higiena jamy ustnej")
     higienistka.Check(user)
-    if headless ==9:
-        higienistka.Check(user)
+
     
 def derma():
     derma = Visit("dermatologia i wenerologia")
     derma.Check(user)
-    if headless ==9:
-        derma.Check(user)
+
     
 def endo():
     endo = Visit("endokrynologia", "Jańczyk")
     endo.Check(user)
-    if headless ==9:
-        endo.Check(user)
+
 def interna():
-    interna = Visit("interna")
+    interna = Visit("interna", args.name)
     interna.Check(user)
-    if headless ==9:
-        interna.Check(user)
+
     
 def close():
     root.destroy()
@@ -244,9 +241,11 @@ parser.add_argument("-f", "--file", dest="filename",
 parser.add_argument("-q", "--quiet",
                     action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
-parser.add_argument('-l', '--doc', nargs ='?')
+parser.add_argument('-s', '--spec', nargs ='?')
+parser.add_argument('-n', '--name', nargs ='?')
 args = parser.parse_args()
-print(args.doc)
+print(args.spec)
+print(args.name)
 
 if args.quiet:
     silencio = 1
@@ -267,10 +266,13 @@ if __name__ == "__main__":
     else:
         user = "Maciek"
         headless =1
-        if args.doc =="endo":
+        if args.spec =="endo":
             endo()
+        elif args.spec =="interna":
+            interna()
         else:
             Pap()
+            
     
 
 
