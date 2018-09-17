@@ -1,5 +1,4 @@
 
-# In[ ]:
 class Visit():
     
     def __init__(self,spec, name=None):
@@ -69,7 +68,7 @@ class Visit():
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(5) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(7) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(9) > input:nth-child(1)").click()
-        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]')   .click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
         time.sleep(1)
                 
@@ -81,10 +80,14 @@ class Visit():
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
-
-        elem = driver.find_element_by_css_selector("input.form-control")
-        elem.clear()
-        elem.send_keys("2018-08-08 - 2018-10-22")
+#here we click next month 3 times and select 25th day)
+        elem = driver.find_element_by_css_selector("input.form-control").click()
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
+        elem = driver.find_element_by_css_selector(".btn-success").click()
+        
         try:
             elem = driver.find_element_by_css_selector("#AcptRul").click()
         except:
@@ -138,10 +141,9 @@ def Reserve():
     pass
 
 def Pap():
-    papla = Visit("ginekologia","Papla")
+    papla = Visit("ginekologia","Paplicki")
     papla.Check(user)
-
-    
+   
 def higiena():
     higienistka = Visit("higiena jamy ustnej")
     higienistka.Check(user)
@@ -261,17 +263,19 @@ root.withdraw()
 
 if __name__ == "__main__":
     print(silencio)
+  
     if silencio ==0:
-        ShowButtons()
+        headless =0
     else:
-        user = "Maciek"
         headless =1
-        if args.spec =="endo":
-            endo()
-        elif args.spec =="interna":
-            interna()
-        else:
-            Pap()
+        
+    user = "Maciek"
+    if args.spec =="endo":
+        endo()
+    elif args.spec =="interna":
+        interna()
+    else:
+        Pap()
             
     
 
