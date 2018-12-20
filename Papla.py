@@ -10,7 +10,7 @@ class Visit():
         switcher = '//span[contains(text(), "'+self.name+'")]'       
         return switcher
 
-
+#
     
     def Check(self, user):
         global headless
