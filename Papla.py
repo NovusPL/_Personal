@@ -9,9 +9,6 @@ class Visit():
         switcher = self.name
         switcher = '//span[contains(text(), "'+self.name+'")]'       
         return switcher
-
-
-#
     
     def Check(self, user):
         global headless
@@ -116,10 +113,6 @@ class Visit():
                   driver.close()
             else:
                 driver.quit()
-        
-                
-                
-                
 
 
 def credentials(user):
