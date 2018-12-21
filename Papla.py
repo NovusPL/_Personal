@@ -10,6 +10,7 @@ class Visit():
         switcher = '//span[contains(text(), "'+self.name+'")]'       
         return switcher
 
+
 #
     
     def Check(self, user):
@@ -82,7 +83,8 @@ class Visit():
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
 #here we click next month 3 times and select 25th day)
         elem = driver.find_element_by_css_selector("input.form-control").click()
-        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+        #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+
         elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
         elem = driver.find_element_by_css_selector(".btn-success").click()
         
@@ -141,12 +143,12 @@ def Reserve():
 def Pap():
     papla = Visit("ginekologia","Paplicki")
     papla.Check(user)
-   
+
 def higiena():
     higienistka = Visit("higiena jamy ustnej")
     higienistka.Check(user)
 
-    
+
 def derma():
     derma = Visit("dermatologia i wenerologia")
     derma.Check(user)
@@ -159,6 +161,18 @@ def endo():
 def interna():
     interna = Visit("interna", args.name)
     interna.Check(user)
+
+def diet():
+    diet = Visit("dietetyka", "Zygmanowska")
+    diet.Check(user)
+    
+def ortopeda():
+    ortopeda = Visit("ortopedia")
+    ortopeda.Check(user)
+    
+def pulmo():
+    pulmo = Visit("pulmonologia", "Paprota")
+    pulmo.Check(user)
 
     
 def close():
@@ -267,14 +281,28 @@ if __name__ == "__main__":
     else:
         headless =1
         
-    user = "Maciek"
+
+    user = "Kasia"
+
+
     if args.spec =="endo":
         endo()
     elif args.spec =="interna":
         interna()
+
+    elif args.spec =="diet":
+        diet()
+    elif args.spec =="ortopeda":
+        ortopeda()
+    elif args.spec =="pulmo":
+        pulmo()
+    elif args.spec =="higiena":
+        higiena()        
     else:
         Pap()
             
+    
+
 
 
 root.mainloop()
