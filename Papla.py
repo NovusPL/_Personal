@@ -1,18 +1,14 @@
 
-# In[ ]:
 class Visit():
     
-    def __init__(self,spec, name="NONE"):
+    def __init__(self,spec, name=None):
         self.spec = spec
         self.name = name
         
-    def Doctor_Name(self,name="NONE"):
-        switcher = {
-        'Papla': '//span[contains(text(), "Papl")]',
-        1: "one",
-        2: "two",
-        }
-        return switcher.get(name, "NONE")
+    def Doctor_Name(self,name=None):
+        switcher = self.name
+        switcher = '//span[contains(text(), "'+self.name+'")]'       
+        return switcher
 
 
     
@@ -72,22 +68,24 @@ class Visit():
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(5) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(7) > input:nth-child(1)").click()
         elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(9) > input:nth-child(1)").click()
-        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]')   .click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
         time.sleep(1)
                 
         select = Select(driver.find_element_by_id("ListOfSpecialities"))
         select.select_by_visible_text(self.spec)
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
-
-        if self.name !="NONE":
+        print(self.name)
+        if self.name !=None:
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
-
-        elem = driver.find_element_by_css_selector("input.form-control")
-        elem.clear()
-        elem.send_keys("2018-08-08 - 2018-10-22")
+#here we click next month 3 times and select 25th day)
+        elem = driver.find_element_by_css_selector("input.form-control").click()
+        #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
+        elem = driver.find_element_by_css_selector(".btn-success").click()
+        
         try:
             elem = driver.find_element_by_css_selector("#AcptRul").click()
         except:
@@ -95,8 +93,7 @@ class Visit():
         elem = driver.find_element_by_id("sbtn").click()
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[contains(text(), "terminie możesz")]')))
 
-        #time.sleep(8)
-        lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]")   
+        time.sleep(1)
         if headless ==1:
             driver.save_screenshot(dir_path+filename+'.png')
             lol = driver.find_elements_by_xpath("//*[contains(text(), 'Nie znaleziono')]") 
@@ -109,13 +106,18 @@ class Visit():
                   f = Image.open(dir_path+filename+'.png').show()
                   MsgBox = tk.messagebox.askquestion('Question', 'Visit Found. Would you like to go to reservation?')
                   if MsgBox =='yes':
-                      headless = 9
+                      headless = 0
+                      self.Check(user)
                   else:
                       driver.close()
                 else:
                   driver.close()
             else:
                 driver.quit()
+        
+                
+                
+                
 
 
 def credentials(user):
@@ -137,33 +139,37 @@ def Reserve():
     pass
 
 def Pap():
-    papla = Visit("ginekologia","Papla")
+    papla = Visit("ginekologia","Paplicki")
     papla.Check(user)
-    if headless ==9:
-        papla.Check(user)
     
 def higiena():
     higienistka = Visit("higiena jamy ustnej")
     higienistka.Check(user)
-    if headless ==9:
-        higienistka.Check(user)
-    
+
 def derma():
     derma = Visit("dermatologia i wenerologia")
     derma.Check(user)
-    if headless ==9:
-        derma.Check(user)
+
     
 def endo():
-    endo = Visit("endokrynologia")
+    endo = Visit("endokrynologia", "Jańczyk")
     endo.Check(user)
-    if headless ==9:
-        endo.Check(user)
+
 def interna():
-    interna = Visit("interna")
+    interna = Visit("interna", args.name)
     interna.Check(user)
-    if headless ==9:
-        interna.Check(user)
+    
+def diet():
+    diet = Visit("dietetyka", "Zygmanowska")
+    diet.Check(user)
+    
+def ortopeda():
+    ortopeda = Visit("ortopedia")
+    ortopeda.Check(user)
+    
+def pulmo():
+    pulmo = Visit("pulmonologia", "Paprota")
+    pulmo.Check(user)
     
 def close():
     root.destroy()
@@ -235,7 +241,7 @@ from datetime import datetime
 global filename
 import os 
 global dir_path
-dir_path = os.path.dirname(os.path.realpath('__file__'))+"\\"
+dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
 print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
@@ -245,8 +251,11 @@ parser.add_argument("-f", "--file", dest="filename",
 parser.add_argument("-q", "--quiet",
                     action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
-
+parser.add_argument('-s', '--spec', nargs ='?')
+parser.add_argument('-n', '--name', nargs ='?')
 args = parser.parse_args()
+print(args.spec)
+print(args.name)
 
 if args.quiet:
     silencio = 1
@@ -262,12 +271,28 @@ root.withdraw()
 
 if __name__ == "__main__":
     print(silencio)
+  
     if silencio ==0:
-        ShowButtons()
+        headless =0
     else:
-        user = "Maciek"
         headless =1
+        
+    user = "Kasia"
+    if args.spec =="endo":
+        endo()
+    elif args.spec =="interna":
+        interna()
+    elif args.spec =="diet":
+        diet()
+    elif args.spec =="ortopeda":
+        ortopeda()
+    elif args.spec =="pulmo":
+        pulmo()
+    elif args.spec =="higiena":
+        higiena()        
+    else:
         Pap()
+            
     
 
 
