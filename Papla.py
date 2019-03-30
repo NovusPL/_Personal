@@ -9,6 +9,8 @@ class Visit():
         switcher = self.name
         switcher = '//span[contains(text(), "'+self.name+'")]'       
         return switcher
+
+
     
     def Check(self, user):
         global headless
@@ -59,17 +61,20 @@ class Visit():
         elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
         time.sleep(1)
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(1) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(2) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(3) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(4) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(5) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(7) > input:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector("#appendhere > label:nth-child(9) > input:nth-child(1)").click()
+         
+        
+        #Edit here to select which enel med locations you want to search though. I think you can switch to xpath and text() 'name' for easier access
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Arkadia")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Atrium")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Blue")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Centrum")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Domaniew")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Post")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Przyoko")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
         time.sleep(1)
-                
+    
         select = Select(driver.find_element_by_id("ListOfSpecialities"))
         select.select_by_visible_text(self.spec)
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
@@ -81,8 +86,7 @@ class Visit():
 #here we click next month 3 times and select 25th day)
         elem = driver.find_element_by_css_selector("input.form-control").click()
         #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
-
-        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
+        #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
         elem = driver.find_element_by_css_selector(".btn-success").click()
         
         try:
@@ -113,6 +117,10 @@ class Visit():
                   driver.close()
             else:
                 driver.quit()
+        
+                
+                
+                
 
 
 def credentials(user):
@@ -136,11 +144,10 @@ def Reserve():
 def Pap():
     papla = Visit("ginekologia","Paplicki")
     papla.Check(user)
-
+    
 def higiena():
     higienistka = Visit("higiena jamy ustnej")
     higienistka.Check(user)
-
 
 def derma():
     derma = Visit("dermatologia i wenerologia")
@@ -154,7 +161,7 @@ def endo():
 def interna():
     interna = Visit("interna", args.name)
     interna.Check(user)
-
+    
 def diet():
     diet = Visit("dietetyka", "Zygmanowska")
     diet.Check(user)
@@ -166,7 +173,6 @@ def ortopeda():
 def pulmo():
     pulmo = Visit("pulmonologia", "Paprota")
     pulmo.Check(user)
-
     
 def close():
     root.destroy()
@@ -274,15 +280,11 @@ if __name__ == "__main__":
     else:
         headless =1
         
-
     user = "Kasia"
-
-
     if args.spec =="endo":
         endo()
     elif args.spec =="interna":
         interna()
-
     elif args.spec =="diet":
         diet()
     elif args.spec =="ortopeda":
@@ -295,7 +297,6 @@ if __name__ == "__main__":
         Pap()
             
     
-
 
 
 root.mainloop()
