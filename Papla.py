@@ -52,14 +52,35 @@ class Visit():
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="visits-slot"]/div/div/div[1]/a/img')))
 
         elem = driver.get("https://online.enel.pl/Visit/New")
-        elem = driver.find_element_by_id("City")
-        select = Select(driver.find_element_by_id("City"))
-        select.select_by_visible_text("Warszawa")
-        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
+        try:
+            elem = driver.find_element_by_xpath('//*[@id="NotificationPopup"]/div/div[2]/a[1]/i').click()
+            time.sleep(1)
 
+        except:
+            pass
+        
+        # Module to select the City
+        wait = WebDriverWait(driver, 100)
+
+        elem = driver.find_element_by_xpath('//*[@id="City"]').click()
+        time.sleep(1)
+        elem = driver.find_element_by_xpath('//*[@id="City"]').click()
+
+
+
+        select = Select(driver.find_element_by_xpath('//*[@id="City"]'))
+        select.select_by_visible_text("Warszawa")
+        
+        #End of module to select the city
+        
+        
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
         
         elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
+        
+
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
+        
         time.sleep(1)
          
         
@@ -67,13 +88,19 @@ class Visit():
         elem = driver.find_element_by_xpath('//span[contains(text(), "Arkadia")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Atrium")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Blue")]').click()                                        
-        elem = driver.find_element_by_xpath('//span[contains(text(), "Centrum")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Oddział Centrum")]').click() 
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Oddział Galeria Młociny")]').click() 
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Arkadia")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Domaniew")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Post")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Przyoko")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
         time.sleep(1)
+        
+        #os.system("pause")
+    
+    
     
         select = Select(driver.find_element_by_id("ListOfSpecialities"))
         select.select_by_visible_text(self.spec)
@@ -177,60 +204,7 @@ def pulmo():
 def close():
     root.destroy()
     
-def ShowButtons():
-    global headless
-    headless =1
-    
-    root.deiconify()
-    root.title('Doctor Selector')
-    frame = tk.Frame(root)
-    frame.pack()
-    intern = tk.Button(frame,text = 'Interna', command=interna)
-    intern.pack(side = tk.RIGHT)
-    button = tk.Button(frame, 
-                   text="QUIT", 
-                   fg="red",
-                   command=close)
-    button.pack(side=tk.LEFT)
-    slogan = tk.Button(frame,
-                   text="Papla",
-                   command=Pap)
-    slogan.pack(side=tk.LEFT)
-    dental = tk.Button(frame,text = 'Higienistka', command=higiena)
-    dental.pack(side = tk.BOTTOM)
-    
-    dermatolog = tk.Button(frame,text = 'Dermatolog', command=derma)
-    dermatolog.pack(side = tk.BOTTOM)
-    
-    endok = tk.Button(frame,text = 'Endokrynolog', command=endo)
-    endok.pack(side = tk.BOTTOM)
-    
-    
-    
-    def sel():
-        global user
-        user = str(var.get())
-    def click():
-        global headless
-        headless = v.get()
 
-    var = StringVar(value="1")
-    R1 = Radiobutton(root, text="Maciuch", variable=var, value="Maciek",
-                      command=sel)
-    R1.pack( anchor = W )
-
-    R2 = Radiobutton(root, text="Donat", variable=var, value="Kasia",
-                      command=sel)
-    R2.pack( anchor = W )
-    
-    v = IntVar(value = 1)
-
-    c = Checkbutton(root, text="HEADLESS - FOR TESTING", variable=v, onvalue = 1, offvalue = 0, command = click)
-    c.pack()
-   
-
-    label = Label(root)
-    label.pack()
 
 
 # In[3]:
@@ -266,11 +240,6 @@ else:
     silencio = 0
 
 
-
-root = tk.Tk()
-root.geometry("300x150")
-#root.iconbitmap('favicon.ico')
-root.withdraw()
 
 if __name__ == "__main__":
     print(silencio)
