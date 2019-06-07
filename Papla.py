@@ -181,7 +181,10 @@ def derma():
     derma.Check(user)
 
 def VOID():
-    pass    
+    pass  
+
+def dupa():
+    pass  
     
 def endo():
     endo = Visit("endokrynologia", "Jańczyk")
