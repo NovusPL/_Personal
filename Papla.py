@@ -168,9 +168,6 @@ def Beep():
 def Reserve():
     pass
 
-def CHUJ():
-    pass
-
 def Pap():
     papla = Visit("ginekologia","Paplicki")
     papla.Check(user)
