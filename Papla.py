@@ -180,6 +180,8 @@ def derma():
     derma = Visit("dermatologia i wenerologia")
     derma.Check(user)
 
+def VOID():
+    pass    
     
 def endo():
     endo = Visit("endokrynologia", "Jańczyk")
