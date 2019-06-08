@@ -130,14 +130,16 @@ class Visit():
 
 #here we click next month 3 times and select 25th day)
         elem = driver.find_element_by_css_selector("input.form-control").click()
-        #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
+        elem = driver.find_element_by_css_selector("#popover982952 > div.popover-content2 > div.row > div:nth-child(2) > div > div > div.datetimepicker-days > table > thead > tr:nth-child(1) > th.next > i").click()
         #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
-        elem = driver.find_element_by_css_selector(".btn-success").click()
+        #elem = driver.find_element_by_xpath('//*[@id="popover121297"]/div[2]/div[4]/a').click()
         
+
         try:
             elem = driver.find_element_by_css_selector("#AcptRul").click()
         except:
             pass
+
         elem = driver.find_element_by_id("sbtn").click()
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[contains(text(), "terminie możesz")]')))
 
