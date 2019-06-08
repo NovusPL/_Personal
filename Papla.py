@@ -106,7 +106,6 @@ class Visit():
 #wybór specjalnosci
         time.sleep(1)
         elem = driver.find_element_by_css_selector("#ListOfServices").click()
-<<<<<<< Updated upstream
         select = Select(driver.find_element_by_css_selector("#ListOfServices"))
         select.select_by_visible_text(self.spec)
                                                    
@@ -117,31 +116,14 @@ class Visit():
 #wybór lekarza  
         
         time.sleep(3)
-=======
-        
-                                                   
-        #select = Select(driver.find_element_by_css_selector("#ListOfServices").click())
-        #select.select_by_visible_text(self.spec)
-        #elem = driver.find_element_by_xpath('//span[contains(text(), "Konsultacja ginekologiczna")]').click()
-        #driver.find_element_by_xpath('//span[contains(text(), "Konsultacja ginekologiczna")]').click()
-        #print(self.spec)
-        
-        
-        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
 
-
-#wybór lekarza    
->>>>>>> Stashed changes
         print(self.name)
         if self.name !=None:
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
-<<<<<<< Updated upstream
             driver.find_element_by_css_selector("#confirmDoctor").click()            
 
-=======
->>>>>>> Stashed changes
 
 
 
@@ -204,21 +186,13 @@ def Beep():
 def Reserve():
     pass
 
-<<<<<<< Updated upstream
 def gin():
     gin = Visit("Konsultacja ginekologiczna", name="Paplicki")
     gin.Check(user)
     
 def higiena():
     higienistka = Visit("Higiena jamy ustnej", kat="STOMATOLOGIA")
-=======
-def Pap():
-    papla = Visit("Konsultacja ginekologiczna","Paplicki")
-    papla.Check(user)
-    
-def higiena():
-    higienistka = Visit("higiena jamy ustnej",kat="STOMATOLOGIA")
->>>>>>> Stashed changes
+
     higienistka.Check(user)
     
 def przeglad():
