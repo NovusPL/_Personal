@@ -1,9 +1,11 @@
 
 class Visit():
     
-    def __init__(self,spec, name=None):
+    def __init__(self,spec, name=None, kat="KONSULTACJE"):
         self.spec = spec
         self.name = name
+        self.kat = kat
+        
         
     def Doctor_Name(self,name=None):
         switcher = self.name
@@ -59,38 +61,31 @@ class Visit():
         except:
             pass
         
-        # Module to select the City
+        #Wybór miasta
         wait = WebDriverWait(driver, 100)
 
         elem = driver.find_element_by_xpath('//*[@id="City"]').click()
         time.sleep(1)
         elem = driver.find_element_by_xpath('//*[@id="City"]').click()
 
-
-
         select = Select(driver.find_element_by_xpath('//*[@id="City"]'))
         select.select_by_visible_text("Warszawa")
         
-        #End of module to select the city
         
         
+#Wybór oddziałóW
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
-        
         elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
-        
-
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
         
         time.sleep(1)
          
-        
-        #Edit here to select which enel med locations you want to search though. I think you can switch to xpath and text() 'name' for easier access
+        #Edit here to select which enel med locations you want to search though.
         elem = driver.find_element_by_xpath('//span[contains(text(), "Arkadia")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Atrium")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Blue")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Oddział Centrum")]').click() 
-        elem = driver.find_element_by_xpath('//span[contains(text(), "Oddział Galeria Młociny")]').click() 
-        elem = driver.find_element_by_xpath('//span[contains(text(), "Arkadia")]').click()                                        
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Oddział Galeria Młociny")]').click()                                       
         elem = driver.find_element_by_xpath('//span[contains(text(), "Domaniew")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Post")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Przyoko")]').click()                                        
@@ -99,17 +94,58 @@ class Visit():
         time.sleep(1)
         
         #os.system("pause")
+        
+        
+#wybór rodzaju usługi
+        time.sleep(2)
+        elem = driver.find_element_by_id("ListOfTypes").click()
+        select = Select(driver.find_element_by_id("ListOfTypes"))
+        select.select_by_visible_text(self.kat)
     
-    
-    
-        select = Select(driver.find_element_by_id("ListOfSpecialities"))
+   
+#wybór specjalnosci
+        time.sleep(1)
+        elem = driver.find_element_by_css_selector("#ListOfServices").click()
+<<<<<<< Updated upstream
+        select = Select(driver.find_element_by_css_selector("#ListOfServices"))
         select.select_by_visible_text(self.spec)
+                                                   
+
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
+
+
+#wybór lekarza  
+        
+        time.sleep(3)
+=======
+        
+                                                   
+        #select = Select(driver.find_element_by_css_selector("#ListOfServices").click())
+        #select.select_by_visible_text(self.spec)
+        #elem = driver.find_element_by_xpath('//span[contains(text(), "Konsultacja ginekologiczna")]').click()
+        #driver.find_element_by_xpath('//span[contains(text(), "Konsultacja ginekologiczna")]').click()
+        #print(self.spec)
+        
+        
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
+
+
+#wybór lekarza    
+>>>>>>> Stashed changes
         print(self.name)
         if self.name !=None:
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
+<<<<<<< Updated upstream
+            driver.find_element_by_css_selector("#confirmDoctor").click()            
+
+=======
+>>>>>>> Stashed changes
+
+
+
+
 #here we click next month 3 times and select 25th day)
         elem = driver.find_element_by_css_selector("input.form-control").click()
         #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()
@@ -168,38 +204,70 @@ def Beep():
 def Reserve():
     pass
 
+<<<<<<< Updated upstream
+def gin():
+    gin = Visit("Konsultacja ginekologiczna", name="Paplicki")
+    gin.Check(user)
+    
+def higiena():
+    higienistka = Visit("Higiena jamy ustnej", kat="STOMATOLOGIA")
+=======
 def Pap():
-    papla = Visit("ginekologia","Paplicki")
+    papla = Visit("Konsultacja ginekologiczna","Paplicki")
     papla.Check(user)
     
 def higiena():
-    higienistka = Visit("higiena jamy ustnej")
+    higienistka = Visit("higiena jamy ustnej",kat="STOMATOLOGIA")
+>>>>>>> Stashed changes
     higienistka.Check(user)
+    
+def przeglad():
+    przeglad = Visit("Przegląd stomatologiczny", kat="STOMATOLOGIA")
+    przeglad.Check(user)
 
 def derma():
-    derma = Visit("dermatologia i wenerologia")
+    derma = Visit("Konsultacja dermatologiczna")
     derma.Check(user)
-
     
 def endo():
-    endo = Visit("endokrynologia", "Jańczyk")
+    endo = Visit("Konsultacja endokrynologiczna", name="Jańczyk")
     endo.Check(user)
 
 def interna():
-    interna = Visit("interna", args.name)
+    interna = Visit("Konsultacja internistyczna", args.name)
     interna.Check(user)
     
 def diet():
-    diet = Visit("dietetyka", "Zygmanowska")
+    diet = Visit("Konsultacja dietetyka")
     diet.Check(user)
     
-def ortopeda():
-    ortopeda = Visit("ortopedia")
-    ortopeda.Check(user)
+def orto():
+    orto = Visit("Konsultacja ortopedyczna", name="Wyka")
+    orto.Check(user)
     
 def pulmo():
-    pulmo = Visit("pulmonologia", "Paprota")
+    pulmo = Visit("Konsultacja pulmonologiczna", name="Paprota")
     pulmo.Check(user)
+    
+def neuro():
+    neuro = Visit("Konsultacja neurologiczna")
+    neuro.Check(user)
+
+def okul():
+    okul = Visit("Konsultacja okulistyczna")
+    okul.Check(user)
+    
+def USGgin():
+    USGgin = Visit("USG narządu rodnego transwaginalne (TV)",kat="USG")
+    USGgin.Check(user)
+    
+def USGpier():
+    USGpier = Visit("USG piersi",kat="USG")
+    USGpier.Check(user)
+    
+def USGtar():
+    USGtar = Visit("USG tarczycy",kat="USG")
+    USGtar.Check(user)
     
 def close():
     root.destroy()
@@ -254,16 +322,32 @@ if __name__ == "__main__":
         endo()
     elif args.spec =="interna":
         interna()
+    elif args.spec =="gin":
+        gin()
+    elif args.spec =="derma":
+        derma()
     elif args.spec =="diet":
         diet()
-    elif args.spec =="ortopeda":
-        ortopeda()
+    elif args.spec =="orto":
+        orto()
     elif args.spec =="pulmo":
         pulmo()
     elif args.spec =="higiena":
-        higiena()        
+        higiena()
+    elif args.spec =="neuro":
+        neuro()        
+    elif args.spec =="okul":
+        okul()     
+    elif args.spec =="przeglad":
+        przeglad()       
+    elif args.spec =="USGgin":
+        USGgin() 
+    elif args.spec =="USGpier":
+        USGpier() 
+    elif args.spec =="USGtar":
+        USGtar() 
     else:
-        Pap()
+        gin()
             
     
 
