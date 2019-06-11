@@ -1,0 +1,24 @@
+Kasia
+interna
+
+
+
+
+
+W pierwszej linijce wpisz nazwe konta
+W drugiej rodzaj us³ugi, skróty ponizej:
+
+endo
+interna
+gin
+derma
+diet
+orto
+pulmo
+higiena
+neuro
+okul
+przeglad
+USGgin
+USGpier
+USGtar

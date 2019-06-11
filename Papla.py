@@ -145,6 +145,17 @@ class Visit():
         Special_Click(self,elem)
         elem = driver.find_element_by_css_selector(".btn-success")
         Special_Click(self,elem)
+  
+               
+        #USG - additional inputs
+        if self.kat == "USG":
+            elem = driver.find_element_by_css_selector("#IssuedBy")
+            elem.clear()
+            elem.send_keys("enel-med")
+            elem = driver.find_element_by_css_selector("#IssuingDoctor")
+            elem.clear()
+            elem.send_keys("Adam Paplicki")
+        
         
         try:
             elem = driver.find_element_by_css_selector("#AcptRul").click()
@@ -178,7 +189,14 @@ class Visit():
                   driver.close()
             else:
                 driver.quit()
-                      
+
+def visitdetails():
+    f = open(dir_path+"wizyta.txt")
+    lines = f.readlines()
+    user = lines[0].split()[0]
+    spec = lines[1].split()[0]
+    f.close()
+    return user, spec                    
 
 def credentials(user):
     f = open(dir_path+user+".txt")
@@ -281,16 +299,20 @@ dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
 print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
+user = visitdetails()[0]
+spec = visitdetails()[1]
+
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",
                     help="write report to FILE", metavar="FILE")
 parser.add_argument("-q", "--quiet",
                     action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
-parser.add_argument('-s', '--spec', nargs ='?')
+#parser.add_argument('-s', '--spec', nargs ='?')
 parser.add_argument('-n', '--name', nargs ='?')
 args = parser.parse_args()
-print(args.spec)
+#print(args.spec)
+print(spec)
 print(args.name)
 
 if args.quiet:
@@ -312,34 +334,34 @@ if __name__ == "__main__":
     else:
         headless =1
         
-    user = "Maciek"
-    if args.spec =="endo":
+    user = "Kasia"
+    if spec =="endo":
         endo()
-    elif args.spec =="interna":
+    elif spec =="interna":
         interna()
-    elif args.spec =="gin":
+    elif spec =="gin":
         gin()
-    elif args.spec =="derma":
+    elif spec =="derma":
         derma()
-    elif args.spec =="diet":
+    elif spec =="diet":
         diet()
-    elif args.spec =="orto":
+    elif spec =="orto":
         orto()
-    elif args.spec =="pulmo":
+    elif spec =="pulmo":
         pulmo()
-    elif args.spec =="higiena":
+    elif spec =="higiena":
         higiena()
-    elif args.spec =="neuro":
+    elif spec =="neuro":
         neuro()        
-    elif args.spec =="okul":
+    elif spec =="okul":
         okul()     
-    elif args.spec =="przeglad":
+    elif spec =="przeglad":
         przeglad()       
-    elif args.spec =="USGgin":
+    elif spec =="USGgin":
         USGgin() 
-    elif args.spec =="USGpier":
+    elif spec =="USGpier":
         USGpier() 
-    elif args.spec =="USGtar":
+    elif spec =="USGtar":
         USGtar() 
     else:
         gin()
