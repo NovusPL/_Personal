@@ -25,7 +25,7 @@ class Visit():
         from selenium.webdriver.support import expected_conditions as EC
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import WebDriverWait
-        from selenium import webdriver
+        from selenium.webdriver.remote.webelement import WebElement
         from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
         login = os.path.expanduser('~')
         binary = FirefoxBinary(login+"\\AppData\\Local\\Mozilla Firefox\\firefox.exe")
@@ -43,6 +43,8 @@ class Visit():
         
         def Special_Click(self, elem):
             elem = driver.execute_script("arguments[0].click();", elem)
+            
+            
         
         try:
             driver = webdriver.Chrome(options=c_options)
@@ -56,7 +58,7 @@ class Visit():
         elem = driver.find_element_by_name("Password")
         elem.clear()
         elem.send_keys(credentials(user)[1])
-        elem = driver.find_element_by_name("IsAcceptedRule").click() 
+        elem = driver.find_element_by_name("IsAcceptedRule").click()
         elem = driver.find_element_by_partial_link_text('Zalo').click()
        
         wait = WebDriverWait(driver, 10)
@@ -263,6 +265,7 @@ def close():
     
 import tkinter as tk
 import sys
+from functools import wraps
 from tkinter import messagebox
 from tkinter import *
 from argparse import ArgumentParser
@@ -270,6 +273,10 @@ from datetime import datetime
 global filename
 import os 
 global dir_path
+
+
+
+
 dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
 print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -295,6 +302,7 @@ else:
 
 if __name__ == "__main__":
     import tkinter
+    
     
     print(silencio)
     root = tkinter.Tk()
