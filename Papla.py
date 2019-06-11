@@ -294,8 +294,11 @@ else:
 
 
 if __name__ == "__main__":
+    import tkinter
+    
     print(silencio)
-  
+    root = tkinter.Tk()
+    root.withdraw()
     if silencio ==0:
         headless =0
     else:
@@ -332,8 +335,4 @@ if __name__ == "__main__":
         USGtar() 
     else:
         gin()
-            
-    
 
-
-root.mainloop()
