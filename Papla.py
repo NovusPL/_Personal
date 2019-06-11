@@ -1,4 +1,3 @@
-
 class Visit():
     
     def __init__(self,spec, name=None, kat="KONSULTACJE"):
@@ -61,7 +60,7 @@ class Visit():
         except:
             pass
         
-        #Wybór miasta
+        #select city
         wait = WebDriverWait(driver, 100)
 
         elem = driver.find_element_by_xpath('//*[@id="City"]').click()
@@ -73,7 +72,7 @@ class Visit():
         
         
         
-#Wybór oddziałóW
+        #select locations
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
         elem = driver.find_element_by_css_selector("#checkboxdropdown > button:nth-child(1)").click()
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
@@ -92,56 +91,47 @@ class Visit():
         elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()                                        
         elem = driver.find_element_by_css_selector("#confirmDepartment").click()
         time.sleep(1)
+             
         
-        #os.system("pause")
-        
-        
-#wybór rodzaju usługi
+        #select type of service
         time.sleep(2)
         elem = driver.find_element_by_id("ListOfTypes").click()
         select = Select(driver.find_element_by_id("ListOfTypes"))
         select.select_by_visible_text(self.kat)
     
    
-#wybór specjalnosci
+        #select specialty
         time.sleep(1)
         elem = driver.find_element_by_css_selector("#ListOfServices").click()
         select = Select(driver.find_element_by_css_selector("#ListOfServices"))
         select.select_by_visible_text(self.spec)
-                                                   
 
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//span[contains(text(), "Wszystkie")]')))
 
 
-#wybór lekarza  
-        
+        #select doctor 
         time.sleep(3)
-
-        print(self.name)
         if self.name !=None:
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
             driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
             driver.find_element_by_css_selector("#confirmDoctor").click()            
 
-
-
-
-
-#here we click next month 3 times and select 25th day)
+        #select dates
+        #here we click next month 1 time and select 15th day)
         elem = driver.find_element_by_css_selector("input.form-control").click()
-        elem = driver.find_element_by_css_selector("#popover982952 > div.popover-content2 > div.row > div:nth-child(2) > div > div > div.datetimepicker-days > table > thead > tr:nth-child(1) > th.next > i").click()
-        #elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(5) > td:nth-child(2)").click()
-        #elem = driver.find_element_by_xpath('//*[@id="popover121297"]/div[2]/div[4]/a').click()
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()       
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(1)").click()
+        elem = driver.find_element_by_css_selector(".btn-success").click()
         
-
         try:
             elem = driver.find_element_by_css_selector("#AcptRul").click()
         except:
             pass
 
         elem = driver.find_element_by_id("sbtn").click()
-        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[contains(text(), "terminie możesz")]')))
+        elem = wait.until(EC.visibility_of_element_located((By.ID,"SearchAgain")))
+        
 
         time.sleep(1)
         if headless ==1:
@@ -164,11 +154,7 @@ class Visit():
                   driver.close()
             else:
                 driver.quit()
-        
-                
-                
-                
-
+                      
 
 def credentials(user):
     f = open(dir_path+user+".txt")
@@ -328,4 +314,4 @@ if __name__ == "__main__":
     
 
 
-root.mainloop()
+#root.mainloop()
