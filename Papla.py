@@ -1,5 +1,6 @@
 class Visit():
     
+    
     def __init__(self,spec, name=None, kat="KONSULTACJE"):
         self.spec = spec
         self.name = name
@@ -10,6 +11,7 @@ class Visit():
         switcher = self.name
         switcher = '//span[contains(text(), "'+self.name+'")]'       
         return switcher
+
 
 
     
@@ -32,10 +34,18 @@ class Visit():
         if headless ==1:
             options.add_argument("-headless")
             c_options.add_argument("--headless")
+            options.add_argument("window-size=1400,600")
+
+
+
         import time
         from datetime import datetime
+        
+        def Special_Click(self, elem):
+            elem = driver.execute_script("arguments[0].click();", elem)
+        
         try:
-            driver = webdriver.Chrome(chrome_options=c_options)
+            driver = webdriver.Chrome(options=c_options)
         except:
             driver = webdriver.Firefox(firefox_options=options, firefox_binary=binary)    
             
@@ -78,7 +88,11 @@ class Visit():
         elem = driver.find_element_by_css_selector(".validate > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
         
         time.sleep(1)
-         
+        
+        
+        
+        
+        
         #Edit here to select which enel med locations you want to search though.
         elem = driver.find_element_by_xpath('//span[contains(text(), "Arkadia")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Atrium")]').click()                                        
@@ -88,8 +102,10 @@ class Visit():
         elem = driver.find_element_by_xpath('//span[contains(text(), "Domaniew")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Post")]').click()                                        
         elem = driver.find_element_by_xpath('//span[contains(text(), "Przyoko")]').click()                                        
-        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()                                        
-        elem = driver.find_element_by_css_selector("#confirmDepartment").click()
+        elem = driver.find_element_by_xpath('//span[contains(text(), "Wilan")]').click()
+        elem = driver.find_element_by_xpath('//*[@id="confirmDepartment"]')
+        Special_Click(self,elem)
+
         time.sleep(1)
              
         
@@ -120,17 +136,23 @@ class Visit():
         #select dates
         #here we click next month 1 time and select 15th day)
         elem = driver.find_element_by_css_selector("input.form-control").click()
-        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)").click()       
-        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(1)").click()
-        elem = driver.find_element_by_css_selector(".btn-success").click()
+        time.sleep(2)
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > thead:nth-child(1) > tr:nth-child(1) > th:nth-child(3) > i:nth-child(1)")
+        Special_Click(self,elem)
+        elem = driver.find_element_by_css_selector(".dtp_input2 > div:nth-child(1) > div:nth-child(3) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(4) > td:nth-child(1)")
+        Special_Click(self,elem)
+        elem = driver.find_element_by_css_selector(".btn-success")
+        Special_Click(self,elem)
         
         try:
             elem = driver.find_element_by_css_selector("#AcptRul").click()
         except:
             pass
 
-        elem = driver.find_element_by_id("sbtn").click()
-        elem = wait.until(EC.visibility_of_element_located((By.ID,"SearchAgain")))
+        elem = driver.find_element_by_id("sbtn")
+        Special_Click(self,elem)
+        time.sleep(5)
+        #elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="Results"]/div[1]/div[1]/div[2]/div/div')))
         
 
         time.sleep(1)
@@ -279,7 +301,7 @@ if __name__ == "__main__":
     else:
         headless =1
         
-    user = "Kasia"
+    user = "Maciek"
     if args.spec =="endo":
         endo()
     elif args.spec =="interna":
@@ -314,4 +336,4 @@ if __name__ == "__main__":
     
 
 
-#root.mainloop()
+root.mainloop()
