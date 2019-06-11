@@ -34,7 +34,7 @@ class Visit():
         if headless ==1:
             options.add_argument("-headless")
             c_options.add_argument("--headless")
-            options.add_argument("window-size=1400,600")
+            c_options.add_argument("window-size=1400,600")
 
 
 
@@ -151,8 +151,8 @@ class Visit():
 
         elem = driver.find_element_by_id("sbtn")
         Special_Click(self,elem)
-        time.sleep(5)
-        #elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="Results"]/div[1]/div[1]/div[2]/div/div')))
+        #time.sleep(5)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="Results"]/div[1]/div[1]/div[2]/div/div')))
         
 
         time.sleep(1)
