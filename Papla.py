@@ -12,7 +12,7 @@ class Visit():
         switcher = '//span[contains(text(), "'+name+'")]'       
         return switcher
 
-
+    
 
     
     def Check(self, user):
@@ -44,6 +44,9 @@ class Visit():
         def Special_Click(self, elem):
             elem = driver.execute_script("arguments[0].click();", elem)
             
+        def Bebe_Switch(self,elem):
+            elem = driver.execute_script("javascript:document.getElementById('reloginForm_c8a46cd0-761c-4fad-83ee-4754ac557f01').submit()")
+    
             
         
         try:
@@ -60,9 +63,11 @@ class Visit():
         elem.send_keys(credentials(user)[1])
         elem = driver.find_element_by_name("IsAcceptedRule").click()
         elem = driver.find_element_by_partial_link_text('Zalo').click()
+
        
         wait = WebDriverWait(driver, 10)
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="visits-slot"]/div/div/div[1]/a/img')))
+        #Bebe_Switch(self, elem)
 
         elem = driver.get("https://online.enel.pl/Visit/New")
         try:
@@ -297,6 +302,8 @@ from datetime import datetime
 global filename
 import os 
 global dir_path
+
+
 
 
 
