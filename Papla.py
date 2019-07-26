@@ -1,10 +1,11 @@
 class Visit():
     
     
-    def __init__(self,spec, name=None, kat="KONSULTACJE"):
+    def __init__(self,spec, name=None, kat="KONSULTACJE", bebe=0):
         self.spec = spec
         self.name = name
         self.kat = kat
+        self.bebe = bebe
         
         
     def Doctor_Name(self,name=None):
@@ -12,7 +13,7 @@ class Visit():
         switcher = '//span[contains(text(), "'+self.name+'")]'       
         return switcher
 
-
+        
 
     
     def Check(self, user):
@@ -55,6 +56,8 @@ class Visit():
         elem = driver.find_element_by_name("Login")
         elem.clear()
         elem.send_keys(credentials(user)[0])
+        
+              
         elem = driver.find_element_by_name("Password")
         elem.clear()
         elem.send_keys(credentials(user)[1])
@@ -63,7 +66,10 @@ class Visit():
        
         wait = WebDriverWait(driver, 10)
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="visits-slot"]/div/div/div[1]/a/img')))
-
+        if self.bebe==1:
+            driver.execute_script("document.getElementById('reloginForm_c8a46cd0-761c-4fad-83ee-4754ac557f01').submit()")
+        
+        
         elem = driver.get("https://online.enel.pl/Visit/New")
         try:
             elem = driver.find_element_by_xpath('//*[@id="NotificationPopup"]/div/div[2]/a[1]/i').click()
@@ -273,6 +279,11 @@ def USGtar():
     USGtar = Visit("USG tarczycy",kat="USG")
     USGtar.Check(user)
     
+def ped_Z():
+    ped_Z = Visit("Konsultacja pediatryczna - dzieci zdrowe", bebe=1)
+    ped_Z.Check(user)
+    
+    
 def close():
     root.destroy()
     
@@ -334,7 +345,7 @@ if __name__ == "__main__":
     else:
         headless =1
         
-    user = "Kasia"
+    user = "Maciek"
     if spec =="endo":
         endo()
     elif spec =="interna":
@@ -363,6 +374,8 @@ if __name__ == "__main__":
         USGpier() 
     elif spec =="USGtar":
         USGtar() 
+    elif spec == "ped_Z":
+        ped_Z()
     else:
         gin()
 
