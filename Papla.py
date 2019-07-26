@@ -9,8 +9,8 @@ class Visit():
         
         
     def Doctor_Name(self,name=None):
-        switcher = self.name
-        switcher = '//span[contains(text(), "'+self.name+'")]'       
+        switcher = name
+        switcher = '//span[contains(text(), "'+name+'")]'       
         return switcher
 
         
@@ -45,6 +45,9 @@ class Visit():
         def Special_Click(self, elem):
             elem = driver.execute_script("arguments[0].click();", elem)
             
+        def Bebe_Switch(self,elem):
+            elem = driver.execute_script("javascript:document.getElementById('reloginForm_c8a46cd0-761c-4fad-83ee-4754ac557f01').submit()")
+    
             
         
         try:
@@ -63,6 +66,7 @@ class Visit():
         elem.send_keys(credentials(user)[1])
         elem = driver.find_element_by_name("IsAcceptedRule").click()
         elem = driver.find_element_by_partial_link_text('Zalo').click()
+
        
         wait = WebDriverWait(driver, 10)
         elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="visits-slot"]/div/div/div[1]/a/img')))
@@ -138,8 +142,10 @@ class Visit():
         if self.name !=None:
             elem = driver.find_element_by_id("checkboxdropdownDoc").click()
             elem = driver.find_element_by_css_selector("#checkboxdropdownDoc > ul:nth-child(2) > li:nth-child(1) > div:nth-child(1) > a:nth-child(1)").click()
-            driver.find_element_by_xpath(self.Doctor_Name(self.name)).click()
+            for i, _ in enumerate(name):                                                       
+                driver.find_element_by_xpath(self.Doctor_Name(self.name[i])).click()
             driver.find_element_by_css_selector("#confirmDoctor").click()            
+
 
         #select dates
         #here we click next month 1 time and select 15th day)
@@ -170,8 +176,8 @@ class Visit():
 
         elem = driver.find_element_by_id("sbtn")
         Special_Click(self,elem)
-        #time.sleep(5)
-        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="Results"]/div[1]/div[1]/div[2]/div/div')))
+        time.sleep(5)
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="SearchAgain"]')))
         
 
         time.sleep(1)
@@ -201,8 +207,12 @@ def visitdetails():
     lines = f.readlines()
     user = lines[0].split()[0]
     spec = lines[1].split()[0]
+    try:
+        name = lines[2].split() 
+    except:
+        name = None  
     f.close()
-    return user, spec                    
+    return user, spec, name                  
 
 def credentials(user):
     f = open(dir_path+user+".txt")
@@ -223,60 +233,60 @@ def Reserve():
     pass
 
 def gin():
-    gin = Visit("Konsultacja ginekologiczna", name="Paplicki")
+    gin = Visit("Konsultacja ginekologiczna", name)
     gin.Check(user)
     
 def higiena():
-    higienistka = Visit("Higiena jamy ustnej", kat="STOMATOLOGIA")
+    higienistka = Visit("Higiena jamy ustnej", name, kat="STOMATOLOGIA")
 
     higienistka.Check(user)
     
 def przeglad():
-    przeglad = Visit("Przegląd stomatologiczny", kat="STOMATOLOGIA")
+    przeglad = Visit("Przegląd stomatologiczny", name, kat="STOMATOLOGIA")
     przeglad.Check(user)
 
 def derma():
-    derma = Visit("Konsultacja dermatologiczna")
+    derma = Visit("Konsultacja dermatologiczna", name)
     derma.Check(user)
     
 def endo():
-    endo = Visit("Konsultacja endokrynologiczna", name="Jańczyk")
+    endo = Visit("Konsultacja endokrynologiczna", name)
     endo.Check(user)
 
 def interna():
-    interna = Visit("Konsultacja internistyczna", args.name)
+    interna = Visit("Konsultacja internistyczna", name)
     interna.Check(user)
     
 def diet():
-    diet = Visit("Konsultacja dietetyka")
+    diet = Visit("Konsultacja dietetyka", name)
     diet.Check(user)
     
 def orto():
-    orto = Visit("Konsultacja ortopedyczna", name="Wyka")
+    orto = Visit("Konsultacja ortopedyczna", name)
     orto.Check(user)
     
 def pulmo():
-    pulmo = Visit("Konsultacja pulmonologiczna", name="Paprota")
+    pulmo = Visit("Konsultacja pulmonologiczna", name)
     pulmo.Check(user)
     
 def neuro():
-    neuro = Visit("Konsultacja neurologiczna")
+    neuro = Visit("Konsultacja neurologiczna", name)
     neuro.Check(user)
 
 def okul():
-    okul = Visit("Konsultacja okulistyczna")
+    okul = Visit("Konsultacja okulistyczna", name)
     okul.Check(user)
     
 def USGgin():
-    USGgin = Visit("USG narządu rodnego transwaginalne (TV)",kat="USG")
+    USGgin = Visit("USG narządu rodnego transwaginalne (TV)", name, kat="USG")
     USGgin.Check(user)
     
 def USGpier():
-    USGpier = Visit("USG piersi",kat="USG")
+    USGpier = Visit("USG piersi", name, kat="USG")
     USGpier.Check(user)
     
 def USGtar():
-    USGtar = Visit("USG tarczycy",kat="USG")
+    USGtar = Visit("USG tarczycy", name, kat="USG")
     USGtar.Check(user)
     
 def ped_Z():
@@ -306,12 +316,15 @@ global dir_path
 
 
 
+
+
 dir_path = os.path.dirname(os.path.realpath(__file__))+"\\"
 print(dir_path)
 filename = datetime.now().strftime("%Y%m%d-%H%M%S")
 
 user = visitdetails()[0]
 spec = visitdetails()[1]
+name = visitdetails()[2]
 
 parser = ArgumentParser()
 parser.add_argument("-f", "--file", dest="filename",
@@ -320,11 +333,9 @@ parser.add_argument("-q", "--quiet",
                     action="store_true", dest="quiet", default=False,
                     help="don't print status messages to stdout")
 #parser.add_argument('-s', '--spec', nargs ='?')
-parser.add_argument('-n', '--name', nargs ='?')
+#parser.add_argument('-n', '--name', nargs ='?')
 args = parser.parse_args()
-#print(args.spec)
-print(spec)
-print(args.name)
+print(name)
 
 if args.quiet:
     silencio = 1
