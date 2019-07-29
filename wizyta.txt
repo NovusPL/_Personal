@@ -1,37 +1,24 @@
-Kasia
-USGgin
-Paplicki Krasoñ
+Maciek
+ped_Z
+
+
 
 
 
 W pierwszej linijce wpisz nazwe konta
-W drugiej rodzaj us³ugi
-W trzeciej nazwisko lekarza, lub kilka nazwisk
+W drugiej rodzaj us³ugi, skróty ponizej:
 
 endo
-Jañczyk
-
 interna
-Kacprzyk
-
 gin
-Paplicki
-
-orto
-Wyka
-
-pulmo
-Paprota
-
-przeglad
-
-
-higiena
 derma
 diet
+orto
+pulmo
+higiena
 neuro
 okul
-
+przeglad
 USGgin
 USGpier
 USGtar
